@@ -25,11 +25,11 @@ def main():
         #    tube.set_x_pos(position)
         #    tubes.append(tube)
         #target_tube = tubes[num_tubes // 2]
-        tubes.append(TestTube("configs/testtube_config.yml", arena.background, 'a', 1000)
-        tubes.append(TestTube("configs/testtube_config.yml", arena.background, 'b', 1250)
-        tubes.append(TestTube("configs/testtube_config.yml", arena.background, 'empty', 1500)
-        tubes.append(TestTube("configs/testtube_config.yml", arena.background, 'c', 1750)
-        tubes.append(TestTube("configs/testtube_config.yml", arena.background, 'a', 2000)
+        tubes.append(TestTube("configs/testtube_config.yml", arena.background, 'a', 1000))
+        tubes.append(TestTube("configs/testtube_config.yml", arena.background, 'b', 1250))
+        tubes.append(TestTube("configs/testtube_config.yml", arena.background, 'empty', 1500))
+        tubes.append(TestTube("configs/testtube_config.yml", arena.background, 'c', 1750))
+        tubes.append(TestTube("configs/testtube_config.yml", arena.background, 'a', 2000))
         
         pipette = Pipette("configs/sprite_config.yml")
         pipette.set_tube_list(tubes)
@@ -59,6 +59,8 @@ def main():
                      pipette.move_left()
                 elif event.type == pg.KEYDOWN and event.key == pg.K_RIGHT:
                      pipette.move_right()
+                elif event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
+                     pipette.get_current_tube().decrease_level()
                 
                 # Sprite Interactions
                 if pg.sprite.spritecollide(pipette, tubes, 1):

@@ -47,8 +47,11 @@ class Pipette(SpriteConfig):
 
     def set_current_tube(self, tube_id):
         self.tube_id = tube_id
-        tube = self.tube_list[tube_id]
-        self.rect.center = (tube.rect.center[0] + 90, tube.rect.center[1] - 300)
+        self.current_tube = self.tube_list[tube_id]
+        self.rect.center = (self.current_tube.rect.center[0] + 90, self.current_tube.rect.center[1] - 300)
+        
+    def get_current_tube(self):
+        return self.current_tube
     ## Add methods to move your sprite below , call them in the update function above. 
 
 
@@ -58,14 +61,31 @@ class TestTube(SpriteConfig):
         super().__init__(config, **kwarg)
         self.area= background.get_rect()
         self.set_x_pos(xpos)
+        self.level = 3
+        self.colour = colour
         if colour == 'empty':
-            self.image_path = "empty_test_tube.png"
-            self.image = load_and_scale("data/" + self.attributes.image_path, self.attributes.scale)
-        else:
-            self.image_path = "test_tube_1_" + colour + ".png"
+            self.attributes.scale = 1.1
+            self.rect.center = (self.rect.center[0], self.attributes.start_pos[1] - 50)
+        self.redraw()
         
+    def decrease_level(self):
+        if self.level > 1:
+            self.level -= 1
+        else:
+            self.level = 0
+            self.colour = 'empty'
+        self.redraw()
+
+    def redraw(self):
+        if self.colour == 'empty':
+            image_path = "empty_test_tube.png"
+        else:
+            image_path = f"test_tube_{self.level}_{self.colour}.png"
+        self.image = load_and_scale("data/" + image_path, self.attributes.scale)
+        
+    
     def set_x_pos(self, x):
-        self.rect.center = (x, self.attributes.start_pos[1])
+        self.rect.center = (x, self.rect.center[1])
 
     def update(self):
         newpos= self.rect.move(( 0, self.move))
