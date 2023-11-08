@@ -50,6 +50,11 @@ class FranklinImp(SpriteConfig):
     def your_methods():
         pass
     ## Add methods to move your sprite below , call them in the update function above. 
+    
+    
+class Pipette(SpriteConfig):
+    def __init__(self, config, **kwargs):
+        super().__init__(config)
 
 
 class TestTube(SpriteConfig ):
