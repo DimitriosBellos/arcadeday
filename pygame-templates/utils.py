@@ -20,5 +20,9 @@ def read_config(config):
         return attributes
 
 
-def randomiser(n_max):
-    return randint(0, n_max)
+def get_instructions():
+    options = ["a", "b", "c", "d"]
+    instructions = [
+        options[randint(0,3)], options[randint(0,3)], options[randint(0,3)], options[randint(0,3)]
+    ]
+    return instructions
