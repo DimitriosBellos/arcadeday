@@ -57,10 +57,12 @@ class Pipette(SpriteConfig):
 
 class TestTube(SpriteConfig):
     """Falling testubes."""
-    def __init__(self,config, background, colour, xpos, **kwarg):
+    def __init__(self,config, background, colour, xpos, ypos=None, **kwarg):
         super().__init__(config, **kwarg)
         self.area= background.get_rect()
         self.set_x_pos(xpos)
+        if ypos is not None:
+            self.set_y_pos(xpos,ypos)
         self.level = 3
         self.colour = colour
         if colour == 'empty':
@@ -86,6 +88,9 @@ class TestTube(SpriteConfig):
     
     def set_x_pos(self, x):
         self.rect.center = (x, self.rect.center[1])
+
+    def set_y_pos(self, x, y):
+        self.rect.center = (x, y)
 
     def update(self):
         newpos= self.rect.move(( 0, self.move))
