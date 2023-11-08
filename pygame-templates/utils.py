@@ -2,6 +2,7 @@ import pygame as pg
 from pathlib import Path
 import yaml
 from munch import Munch
+from random import randint
 
 def load_and_scale( image_path, scale_factor):
     try:
@@ -17,3 +18,7 @@ def read_config(config):
         with open(config, 'r') as file:
             attributes = Munch(yaml.safe_load(file))
         return attributes
+
+
+def randomiser(n_max):
+    return randint(0, n_max)
