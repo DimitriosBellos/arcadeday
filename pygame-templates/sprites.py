@@ -29,46 +29,43 @@ class SpriteConfig(pg.sprite.Sprite):
     
 
 
-class FranklinImp(SpriteConfig):
+class Pipette(SpriteConfig):
     """A little imp that saves your lab."""
     def __init__(self, config, **kwargs):
         super().__init__(config, **kwargs)
-        self.direction = 1
-    def update(self, direction):
-        self.direction= direction
-        self._walk()
+        
+    def move_left(self):
+        if self.tube_id > 0:
+            self.set_current_tube(self.tube_id - 1)
+            
+    def move_right(self):
+        if self.tube_id < len(self.tube_list) - 1:
+            self.set_current_tube(self.tube_id + 1)
+        
+    def set_tube_list(self, tube_list):
+        self.tube_list = tube_list
 
-    def _walk(self):
-        newpos = self.rect.move((self.direction*self.move, 0))
-        self.rect = newpos
-
-    def jump(self):
-        self.direction = -1*self.direction
-        newpos = self.rect.move((0, self.direction*20 ))
-        self.rect = newpos
-
-    def your_methods():
-        pass
+    def set_current_tube(self, tube_id):
+        self.tube_id = tube_id
+        tube = self.tube_list[tube_id]
+        self.rect.center = (tube.rect.center[0] + 90, tube.rect.center[1] - 300)
     ## Add methods to move your sprite below , call them in the update function above. 
-    
-    
-class Pipette(SpriteConfig):
-    def __init__(self, config, **kwargs):
-        super().__init__(config)
 
 
-class TestTube(SpriteConfig ):
+class TestTube(SpriteConfig):
     """Falling testubes."""
-    def __init__(self,config, background, **kwarg):
+    def __init__(self,config, background, colour, xpos, **kwarg):
         super().__init__(config, **kwarg)
-        
         self.area= background.get_rect()
+        self.set_x_pos(xpos)
+        if colour == 'empty':
+            self.image_path = "empty_test_tube.png"
+            self.image = load_and_scale("data/" + self.attributes.image_path, self.attributes.scale)
+        else:
+            self.image_path = "test_tube_1_" + colour + ".png"
         
-    @property
-    def new_x_pos(self):
-
-        self._new_x_pos =randint(self.area.left+self.rect.width, self.area.right-self.rect.width)
-        return self._new_x_pos
+    def set_x_pos(self, x):
+        self.rect.center = (x, self.attributes.start_pos[1])
 
     def update(self):
         newpos= self.rect.move(( 0, self.move))

@@ -1,6 +1,6 @@
 import pygame as pg
 from arena import Arena
-from sprites import FranklinImp, TestTube, SpriteConfig
+from sprites import Pipette, TestTube, SpriteConfig
 
 def main():
         """this function is called when the program starts.
@@ -16,10 +16,27 @@ def main():
         pg.display.flip()
 
         # Initialize Sprites
-        imp = FranklinImp("configs/sprite_config.yml")
-        tube = TestTube("configs/testtube_config.yml", arena.background)
-        allsprites = pg.sprite.Group(imp, tube) # You can create groups of sprites for updates
-        tubes = pg.sprite.Group(tube)
+        num_tubes = 5
+        tubes = []
+        #for i in range(num_tubes):
+        #    x_span = arena.screen.get_size()[0]
+        #    position = (i + 1) * (x_span / (num_tubes + 1))
+        #    tube = TestTube("configs/testtube_config.yml", arena.background)
+        #    tube.set_x_pos(position)
+        #    tubes.append(tube)
+        #target_tube = tubes[num_tubes // 2]
+        tubes.append(TestTube("configs/testtube_config.yml", arena.background, 'a', 1000)
+        tubes.append(TestTube("configs/testtube_config.yml", arena.background, 'b', 1250)
+        tubes.append(TestTube("configs/testtube_config.yml", arena.background, 'empty', 1500)
+        tubes.append(TestTube("configs/testtube_config.yml", arena.background, 'c', 1750)
+        tubes.append(TestTube("configs/testtube_config.yml", arena.background, 'a', 2000)
+        
+        pipette = Pipette("configs/sprite_config.yml")
+        pipette.set_tube_list(tubes)
+        pipette.set_current_tube(num_tubes // 2)
+        #tube = TestTube("configs/testtube_config.yml", arena.background)
+        allsprites = pg.sprite.Group(pipette, *tubes) # You can create groups of sprites for updates
+        tubes = pg.sprite.Group(*tubes)
 
         #Intilize clock sets the frame update rate in the game
         clock = pg.time.Clock()
@@ -39,20 +56,20 @@ def main():
 
                 # Move the sprite
                 elif event.type == pg.KEYDOWN and event.key == pg.K_LEFT:
-                     imp.update(-1)
+                     pipette.move_left()
                 elif event.type == pg.KEYDOWN and event.key == pg.K_RIGHT:
-                     imp.update(1)
+                     pipette.move_right()
                 
                 # Sprite Interactions
-                if pg.sprite.spritecollide(imp, tubes, 1):
-                     tube.catch()
-                     imp.jump()
-                     tube.update()
+                if pg.sprite.spritecollide(pipette, tubes, 1):
+                     #tube.catch()
+                     pipette.jump()
+                     #tube.update()
                      game_over= SpriteConfig("configs/game_over_config.yml")
                      allsprites.add(game_over)
 
             # Update the characters with current state
-            tube.update()
+            #tube.update()
             arena.screen.blit(arena.background, (0, 0))
             allsprites.draw(arena.screen)
             # Display changes.

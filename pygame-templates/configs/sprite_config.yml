@@ -1,4 +1,4 @@
-image_path: sprite.png # the name of your sprite file
+image_path: pipette.png # the name of your sprite file
 scale: 0.5 # Scale the size of your Sprite
-start_pos: [1000,1700] # the pixel coordinates of the start [0,0] is the top left pixel.
+start_pos: [1500,800] # the pixel coordinates of the start [0,0] is the top left pixel.
 move: 50 # The number of pixels you want your sprite to move

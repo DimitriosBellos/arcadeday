@@ -1,4 +1,4 @@
-image_path: testtube.png # the name of your sprite file
-scale: 0.5 # Scale the size of your Sprite
-start_pos: [10,10] # the pixel coordinates of the start [0,0] is the top left pixel.
+image_path: empty_test_tube.png # the name of your sprite file
+scale: 1 # Scale the size of your Sprite
+start_pos: [10,1150] # the pixel coordinates of the start [0,0] is the top left pixel.
 move: 20 # The number of pixels you want your sprite to move
