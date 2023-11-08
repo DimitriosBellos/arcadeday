@@ -20,9 +20,9 @@ def read_config(config):
         return attributes
 
 
-def get_instructions():
+def get_instructions(n):
     options = ["a", "b", "c", "d"]
     instructions = [
-        options[randint(0,3)], options[randint(0,3)], options[randint(0,3)], options[randint(0,3)]
+        options[randint(0,3)] for _ in range(n)
     ]
     return instructions

@@ -19,18 +19,13 @@ def main():
         # Initialize Sprites
         num_tubes = 5
         tubes = []
-        #for i in range(num_tubes):
-        #    x_span = arena.screen.get_size()[0]
-        #    position = (i + 1) * (x_span / (num_tubes + 1))
-        #    tube = TestTube("configs/testtube_config.yml", arena.background)
-        #    tube.set_x_pos(position)
-        #    tubes.append(tube)
-        #target_tube = tubes[num_tubes // 2]
         tubes.append(TestTube("configs/testtube_config.yml", arena.background, 'a', 1000))
         tubes.append(TestTube("configs/testtube_config.yml", arena.background, 'b', 1250))
         tubes.append(TestTube("configs/testtube_config.yml", arena.background, 'empty', 1500))
+        target = tubes[-1]
+        target.level = 0
         tubes.append(TestTube("configs/testtube_config.yml", arena.background, 'c', 1750))
-        tubes.append(TestTube("configs/testtube_config.yml", arena.background, 'a', 2000))
+        tubes.append(TestTube("configs/testtube_config.yml", arena.background, 'd', 2000))
         
         pipette = Pipette("configs/sprite_config.yml")
         pipette.set_tube_list(tubes)
@@ -41,25 +36,28 @@ def main():
 
         #Intilize clock sets the frame update rate in the game
         clock = pg.time.Clock()
+        
+        current_instruction = 0
+        payload = None
+        
+        score_timer = 100 * 60
+        font = pg.font.SysFont(None, 24)
+        img = font.render('hello', True, (100, 0, 0))
+        arena.screen.blit(img, (20, 20))
 
         # Instructions
-        instructions = get_instructions()
-        instructions_test_tubes = []
-        instructions_test_tubes.append(
-             TestTube("configs/testtube_config.yml", arena.background, instructions[0], 1000, 100))
-        instructions_test_tubes.append(
-             TestTube("configs/testtube_config.yml", arena.background, instructions[1], 1250, 100))             
-        instructions_test_tubes.append(
-             TestTube("configs/testtube_config.yml", arena.background, instructions[2], 1500, 100))
-        instructions_test_tubes.append(
-             TestTube("configs/testtube_config.yml", arena.background, instructions[3], 1750, 100))
+        instructions = get_instructions(5)
+        instructions_test_tubes = [
+            TestTube("configs/testtube_config.yml", arena.background, instruction, 1000 + 100 * i, 100)
+            for i, instruction in enumerate(instructions)
+        ]
         allsprites = pg.sprite.Group(pipette, *tubes, *instructions_test_tubes) # You can create groups of sprites for updates
         instructions_test_tubes = pg.sprite.Group(*instructions_test_tubes)
 
         # The Game Loop
         going = True
         while going:
-            clock.tick(60)
+            clock.tick(60)              
 
             # Handle Input Events
             for event in pg.event.get():
@@ -75,7 +73,25 @@ def main():
                 elif event.type == pg.KEYDOWN and event.key == pg.K_RIGHT:
                      pipette.move_right()
                 elif event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
-                     pipette.get_current_tube().decrease_level()
+                     tube = pipette.get_current_tube()
+                     if tube == target:
+                        if payload is not None:
+                            if payload == instructions[current_instruction]:
+                                current_instruction += 1
+                                target.colour = payload
+                                if target.level < 3:
+                                    target.level += 1
+                                target.redraw()
+                                if current_instruction >= len(instructions):
+                                    game_over=SpriteConfig("configs/win.yml")
+                                    allsprites.add(game_over)
+                            else:
+                                game_over=SpriteConfig("configs/game_over_config.yml")
+                                allsprites.add(game_over)  
+                            payload = None                      
+                     else:
+                         payload = tube.colour    
+                         tube.decrease_level()
                 
                 # Sprite Interactions
                 if pg.sprite.spritecollide(pipette, tubes, 1):
@@ -86,7 +102,6 @@ def main():
                      allsprites.add(game_over)
 
             # Update the characters with current state
-            #tube.update()
             arena.screen.blit(arena.background, (0, 0))
             allsprites.draw(arena.screen)
             # Display changes.

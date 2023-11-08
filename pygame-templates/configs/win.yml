@@ -1,0 +1,4 @@
+image_path: test_tube_win.png # the name of your sprite file
+scale: 4 # Scale the size of your Sprite
+start_pos: [1200,650] # the pixel coordinates of the start [0,0] is the top left pixel.
+move: 0 # The number of pixels you want your sprite to move
