@@ -1,6 +1,7 @@
 import pygame as pg
 from arena import Arena
 from sprites import Pipette, TestTube, SpriteConfig
+from utils import get_instructions
 
 def main():
         """this function is called when the program starts.
@@ -40,6 +41,20 @@ def main():
 
         #Intilize clock sets the frame update rate in the game
         clock = pg.time.Clock()
+
+        # Instructions
+        instructions = get_instructions()
+        instructions_test_tubes = []
+        instructions_test_tubes.append(
+             TestTube("configs/testtube_config.yml", arena.background, instructions[0], 1000))
+        instructions_test_tubes.append(
+             TestTube("configs/testtube_config.yml", arena.background, instructions[1], 1250))             
+        instructions_test_tubes.append(
+             TestTube("configs/testtube_config.yml", arena.background, instructions[2], 1500))
+        instructions_test_tubes.append(
+             TestTube("configs/testtube_config.yml", arena.background, instructions[3], 1750))
+        allsprites = pg.sprite.Group(pipette, *tubes, *instructions_test_tubes) # You can create groups of sprites for updates
+        instructions_test_tubes = pg.sprite.Group(*instructions_test_tubes)
 
         # The Game Loop
         going = True
