@@ -46,13 +46,13 @@ def main():
         instructions = get_instructions()
         instructions_test_tubes = []
         instructions_test_tubes.append(
-             TestTube("configs/testtube_config.yml", arena.background, instructions[0], 1000))
+             TestTube("configs/testtube_config.yml", arena.background, instructions[0], 1000, 100))
         instructions_test_tubes.append(
-             TestTube("configs/testtube_config.yml", arena.background, instructions[1], 1250))             
+             TestTube("configs/testtube_config.yml", arena.background, instructions[1], 1250, 100))             
         instructions_test_tubes.append(
-             TestTube("configs/testtube_config.yml", arena.background, instructions[2], 1500))
+             TestTube("configs/testtube_config.yml", arena.background, instructions[2], 1500, 100))
         instructions_test_tubes.append(
-             TestTube("configs/testtube_config.yml", arena.background, instructions[3], 1750))
+             TestTube("configs/testtube_config.yml", arena.background, instructions[3], 1750, 100))
         allsprites = pg.sprite.Group(pipette, *tubes, *instructions_test_tubes) # You can create groups of sprites for updates
         instructions_test_tubes = pg.sprite.Group(*instructions_test_tubes)
 
